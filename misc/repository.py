@@ -9,7 +9,8 @@ class Repo:
         with self.database as cursor:
             cursor.executescript("""CREATE TABLE IF NOT EXISTS data
             (id integer unique default 1,
-            api_base_url text unique default 'https://cleaner.dadata.ru/',
+            api_base_url_cleaner text unique default 'https://cleaner.dadata.ru/',
+            api_base_url_suggest text unique default 'https://suggestions.dadata.ru/',
             api_key text unique default NULL,
             secret_token text unique default NULL,
             lang text CHECK (lang in ('ru', 'en')) default 'ru');""")
@@ -21,9 +22,16 @@ class Repo:
             result = cursor.fetchone()
         return result
 
-    def get_base_url(self):
+    def update_lang(self, lang: str):
         with self.database as cursor:
-            cursor.execute("SELECT api_base_url, id FROM data limit 1;")
+            cursor.execute("""UPDATE data
+                            SET lang = ?
+                            WHERE id = 1;""", ("ru" if lang == '1' else "en"))
+
+
+    def get_base_params(self):
+        with self.database as cursor:
+            cursor.execute("SELECT api_base_url_cleaner, api_base_url_suggest, lang FROM data limit 1;")
             result = cursor.fetchone()
         return result
 
