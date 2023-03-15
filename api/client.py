@@ -1,10 +1,10 @@
 
-from misc.repository import Repo
-from httpx import Client
+from database.repository import Repo
+from httpx import Client as HttpClient
 from abc import abstractmethod
 
 
-class DadataClientBase:
+class ClientBase:
     def __enter__(self):
         return self
 
@@ -16,7 +16,7 @@ class DadataClientBase:
         NotImplementedError
 
 
-class DadataClient(DadataClientBase):
+class Client(ClientBase):
     def __init__(self):
         self.repo = Repo()
         self._init_client_params()
@@ -28,7 +28,7 @@ class DadataClient(DadataClientBase):
             "X-secret": self.token
         }
 
-        self._client = Client(headers=headers)
+        self._client = HttpClient(headers=headers)
 
     def _init_client_params(self):
         self.api_key, self.token = self.repo.get_tokens()
