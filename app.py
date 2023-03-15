@@ -1,25 +1,32 @@
 from misc.repository import Repo
 from misc.dadata_client import DadataClient
 
+from misc.templates import main_menu
+from misc.dadata_client import DadataClient
+
 
 class DadataApp:
-    repo = Repo()
-
     def __init__(self):
+        self.repo = Repo()
+        self.client = DadataClient
         self.repo.initial_table()
 
     def start(self):
         self._main_menu()
 
     def _main_menu(self):
-        current_tokens = self.repo.get_tokens()
-        if current_tokens[0] and current_tokens[1]:
-            self._main_menu_with_token()
-        else:
-            self._main_menu_without_token()
+        id_key, token = self.repo.get_tokens()
+        if id_key and token:
+            return self._main_menu_with_token()
+        return self._main_menu_without_token()
+
 
     def _main_menu_with_token(self):
-        print("Привет, дорогой")
+        print(main_menu)
+        command = int(input("Введите команду: "))
+        if command == 1:
+            self._api_query()
+
 
     def _main_menu_without_token(self):
         self.repo.set_tokens(api_key=input("Введите api_key от сервиса dadata.ru: "),
@@ -30,7 +37,13 @@ class DadataApp:
         pass
 
     def _api_query(self):
-        pass
+        address = input("Введите искомый адрес: ")
+        with self.client() as client:
+            response = client.get_address(address)
+            print(response)
+
+
+
 
 
 

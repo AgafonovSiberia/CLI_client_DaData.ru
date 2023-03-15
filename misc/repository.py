@@ -21,6 +21,12 @@ class Repo:
             result = cursor.fetchone()
         return result
 
+    def get_base_url(self):
+        with self.database as cursor:
+            cursor.execute("SELECT api_base_url, id FROM data limit 1;")
+            result = cursor.fetchone()
+        return result
+
     def set_tokens(self, api_key: str, secret_token):
         with self.database as cursor:
             cursor.execute("""UPDATE data
