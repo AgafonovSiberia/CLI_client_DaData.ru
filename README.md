@@ -3,11 +3,12 @@
 # CLI-client для сервиса DaData.ru
 
 
-### Запуск
+## Запуск
 **Внимание!**<br>
-Прежде, чем развернуть проект, убедитесь, что у вас в системе установлен [Python3.10](https://www.python.org/downloads/) и система управления зависимостями [Poetry](https://python-poetry.org/docs/)
+Прежде, чем развернуть проект, убедитесь, что у вас в системе установлен [Python3.10](https://www.python.org/downloads/)
 
-
+#### Предпочтительный метод
+Для развертывания приложения этим способ необходимо, чтобы была установлена система управления зависимостями [Poetry](https://python-poetry.org/docs/)
 1.Перейдите в директорию, в которой планируете развернуть проект
 ```
 mkdir some_dir
@@ -16,7 +17,7 @@ cd some_dir
 
 2.Склонируйте репозиторий себе на локальный компьютер
 ```
-git clone git@github.com:AgafonovSiberia/CLI_client_DaData.ru.git
+git clone https://github.com/AgafonovSiberia/CLI_client_DaData.ru.git
 ```
 
 3.Перейдите в директорию проекта 
@@ -29,6 +30,17 @@ cd CLI_client_DaDadata.ru
 poetry install
 poetry run python -m main.py
 ```
+
+#### Альтернативный метод
+<ol>
+  <li>Клонировать репозиторий <code>git clone ghttps://github.com/AgafonovSiberia/CLI_client_DaData.ru.git</code>
+  <li>Перейти в рабочий каталог <code>cd CLI_client_DaDadata.ru</code>
+  <li>Создать виртуальное окружение <code>python3.10 -m venv venv</code>
+  <li>Активировать виртуальное окружение <code>source venv/bin/activate</code>
+  <li>Установить зависимости <code>pip install -r requirements.txt</code>
+  <li>Запустить парсер <code>python main.py</code>
+</ol>
+________________________________________________________________
 
 ### Инструкция по работе
 **Внимание!**<br>
