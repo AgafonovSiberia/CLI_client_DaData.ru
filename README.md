@@ -16,12 +16,12 @@ cd some_dir
 
 2.Склонируйте репозиторий себе на локальный компьютер
 ```
-git clone git@github.com:AgafonovSiberia/cli_client_DaData.ru.git
+git clone git@github.com:AgafonovSiberia/CLI_client_DaData.ru.git
 ```
 
 3.Перейдите в директорию проекта 
 ```
-cd cli_client_DaDadata.ru
+cd CLI_client_DaDadata.ru
 ```
 
 4.Установите зависимости и запустите приложение, выполнив следующие команды
