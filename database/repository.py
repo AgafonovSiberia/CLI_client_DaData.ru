@@ -49,7 +49,7 @@ class ConfigReaderFromDB(ConfigReaderBase):
         with self.database as cursor:
             cursor.execute("""UPDATE data
                             SET lang = ?
-                            WHERE id = 1;""", ("ru" if lang == '1' else "en"))
+                            WHERE id = 1;""", ("ru" if lang == '1' else "en", ))
 
     def get_base_params(self):
         with self.database as cursor:

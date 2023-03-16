@@ -1,8 +1,10 @@
 
-from database.repository import Repo
+from database.repository import ConfigReaderFromDB
 from httpx import Client as HttpClient
 from abc import abstractmethod
 
+
+TEST_ADDRESS = "Новосибирск проспект Карла Маркса, 30/1"
 
 class ClientBase:
     def __enter__(self):
@@ -18,7 +20,7 @@ class ClientBase:
 
 class Client(ClientBase):
     def __init__(self):
-        self.repo = Repo()
+        self.config = ConfigReaderFromDB()
         self._init_client_params()
 
         headers = {
@@ -31,8 +33,8 @@ class Client(ClientBase):
         self._client = HttpClient(headers=headers)
 
     def _init_client_params(self):
-        self.api_key, self.token = self.repo.get_tokens()
-        self.base_url_cleaner, self.base_url_suggest, self.lang = self.repo.get_base_params()
+        self.api_key, self.token = self.config.get_tokens()
+        self.base_url_cleaner, self.base_url_suggest, self.lang = self.config.get_base_params()
 
     def get_address(self, address: str):
         response = self._client.post(url=f"{self.base_url_suggest}suggestions/api/4_1/rs/suggest/address",
@@ -43,6 +45,15 @@ class Client(ClientBase):
         response = self._client.post(url=f"{self.base_url_cleaner}api/v1/clean/address",
                                      json=[address])
         return response.json()[0]
+
+    def validate_tokens(self, api_key: str, token: str):
+        response = self._client.post(url=f"{self.base_url_cleaner}api/v1/clean/address",
+                                     json=[TEST_ADDRESS],
+                                     headers={"Authorization": f"Token {api_key}",
+                                              "X-secret": token})
+        if response.status_code == 403:
+            return False
+        return True
 
     def close(self):
         self._client.close()
