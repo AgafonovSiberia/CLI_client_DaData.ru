@@ -33,8 +33,10 @@ class ConfigReaderFromDB(ConfigReaderBase):
             cursor.executescript(
                 """CREATE TABLE IF NOT EXISTS data
             (id integer unique default 1,
-            api_base_url_cleaner text unique default 'https://cleaner.dadata.ru/api/v1/clean',
-            api_base_url_suggest text unique default 'https://suggestions.dadata.ru/suggestions/api/4_1/rs/suggest',
+            api_base_url_cleaner text unique default 
+            'https://cleaner.dadata.ru/api/v1/clean',
+            api_base_url_suggest text unique default 
+            'https://suggestions.dadata.ru/suggestions/api/4_1/rs/suggest',
             api_key text unique default NULL,
             secret_token text unique default NULL,
             lang text CHECK (lang in ('ru', 'en')) default 'ru');"""
@@ -57,7 +59,9 @@ class ConfigReaderFromDB(ConfigReaderBase):
     def get_base_params(self):
         with self.database as cursor:
             cursor.execute(
-                "SELECT api_base_url_cleaner, api_base_url_suggest, lang FROM data limit 1;"
+                "SELECT api_base_url_cleaner, api_base_url_suggest, lang"
+                "FROM data"
+                "limit 1;"
             )
             result = cursor.fetchone()
         return result

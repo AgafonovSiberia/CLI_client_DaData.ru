@@ -92,7 +92,8 @@ class DadataApp:
         """
         Запрашивает от пользователя адрес (в свободной форме).
         Получает от API набор подходящих адресов.
-        Запрашивает у пользователя ID адреса, координаты которого нужно будет определить"""
+        Запрашивает у пользователя ID адреса, координаты которого
+        нужно будет определить"""
         address = input(templates.input_address)
         if address == "0":
             return self._main_menu_with_token()
@@ -116,7 +117,8 @@ class DadataApp:
             print(templates.result)
             print(f"Адрес: {address}")
             print(
-                f"Координаты:\nШирота: {response['geo_lat']}, Долгота: {response['geo_lon']}"
+                f"Координаты:\nШирота: {response['geo_lat']},"
+                f" Долгота: {response['geo_lon']}"
             )
 
     @staticmethod

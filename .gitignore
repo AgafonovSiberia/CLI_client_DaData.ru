@@ -13,6 +13,8 @@ data.db
 .idea/**/dictionaries
 .idea/**/shelf
 
+.ruff_cache
+
 # AWS User-specific
 .idea/**/aws.xml
 
