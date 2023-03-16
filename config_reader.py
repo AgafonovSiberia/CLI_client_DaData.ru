@@ -59,9 +59,8 @@ class ConfigReaderFromDB(ConfigReaderBase):
     def get_base_params(self):
         with self.database as cursor:
             cursor.execute(
-                "SELECT api_base_url_cleaner, api_base_url_suggest, lang"
-                "FROM data"
-                "limit 1;"
+                "SELECT api_base_url_cleaner, api_base_url_suggest, lang "
+                "FROM data limit 1;"
             )
             result = cursor.fetchone()
         return result
