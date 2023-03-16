@@ -62,7 +62,7 @@ class DadataApp:
         print(templates.config_menu)
         command = self._get_command(("1", "2", "0"))
         if command == "1":
-            self._main_menu_withot_token()
+            self._main_menu_without_token()
         elif command == "2":
             self._change_lang_menu()
         elif command == "0":
@@ -122,7 +122,8 @@ class DadataApp:
             )
 
     @staticmethod
-    def _get_command(commands_list: tuple[str], command: int = None):
+    def _get_command(commands_list: tuple[str, ...]):
+        command = None
         while command not in commands_list:
             command = input(templates.input_command)
             if command not in commands_list:
