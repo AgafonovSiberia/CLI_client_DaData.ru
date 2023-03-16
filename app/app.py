@@ -4,6 +4,9 @@ from api.client import Client
 
 
 class DadataApp:
+    """
+    CLI-App для работы с сервисом DaData.ru
+    """
     def __init__(self):
         self.config = ConfigReaderFromDB()
         self.client_class = Client
@@ -19,6 +22,7 @@ class DadataApp:
         return self._main_menu_without_token()
 
     def _main_menu_with_token(self):
+        """Обработчик пользователя, токены которого определены в БД"""
         print(templates.main_menu)
         command = self._get_command(("1", "2", "3"))
         if command == "1":
@@ -30,6 +34,7 @@ class DadataApp:
             exit(0)
 
     def _main_menu_without_token(self):
+        """Обработчик пользователя, токены которого не известны"""
         api_key = input(templates.input_api_key)
         secret_token = input(templates.input_token)
 
@@ -42,6 +47,7 @@ class DadataApp:
         self._tokens_is_not_valid()
 
     def _tokens_is_not_valid(self):
+        """Проверка на валидность токенов введённых пользователем"""
         print(templates.tokens_is_not_valid)
         command = self._get_command(("1", "2"))
         if command == "1":
@@ -51,6 +57,7 @@ class DadataApp:
             exit(0)
 
     def _config_menu(self):
+        """Меню настроек"""
         print(templates.config_menu)
         command = self._get_command(("1", "2", "3"))
         if command == "1":
@@ -61,6 +68,7 @@ class DadataApp:
             self._main_menu_with_token()
 
     def _change_lang_menu(self):
+        """Меню смены языка"""
         print(templates.change_lang)
         command = self._get_command(("1", "2", "3"))
         if command in ("1", "2"):
@@ -80,14 +88,20 @@ class DadataApp:
         self._main_menu()
 
     def _get_address_engine(self):
+        """
+        Запрашивает от пользователя адрес (в свободной форме).
+        Получает от API набор подходящих адресов.
+        Запрашивает у пользователя ID адреса, координаты которого нужно будет определить"""
         address = input(templates.input_address)
         if address == "0":
             return self._main_menu_with_token()
         print(templates.help_message_change_address)
+
         with self.client_class() as client:
             response = client.get_address(address)
-            for idx, addr in enumerate(response, start=1):
-                print(f"{idx} : {addr['unrestricted_value']}")
+
+        for idx, addr in enumerate(response, start=1):
+            print(f"{idx} : {addr['unrestricted_value']}")
 
         address_idx = int(input(templates.input_address_idx))
         if address_idx == 0:
@@ -95,6 +109,7 @@ class DadataApp:
         return response[address_idx - 1]['value']
 
     def _get_location_engine(self, address: str):
+        """Получает от API координаты адреса"""
         with self.client_class() as client:
             response = client.get_location(address)
             print(response["geo_lat"], response["geo_lon"])

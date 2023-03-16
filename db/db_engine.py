@@ -2,6 +2,9 @@ import sqlite3
 
 
 class SQLiteEngine:
+    """
+    Реализация контекстного менеджера для SQlite
+    """
     def __init__(self, database_file: str = "data.db"):
         self.database_file = database_file
 
