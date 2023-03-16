@@ -6,8 +6,8 @@ from api.client import Client
 class DadataApp:
     def __init__(self):
         self.repo = Repo()
-        self.client = Client
-        self.repo.initial_table()
+        self.client_class = Client
+        self.repo.initial_config()
 
     def start(self):
         self._main_menu()
@@ -49,12 +49,12 @@ class DadataApp:
         print(templates.change_lang)
         command = self._get_command(("1", "2", "3"))
         if command in ("1", "2"):
-            self.repo.update_lang(command)
+            self.repo.set_lang(command)
         elif command == "3":
             self._config_menu()
 
     def _change_lang_engine(self, new_lang: str = "en"):
-        self.repo.update_lang(lang=new_lang)
+        self.repo.set_lang(lang=new_lang)
 
     def _api_query_engine(self):
         address_str = self._get_address_engine()
@@ -64,7 +64,7 @@ class DadataApp:
     def _get_address_engine(self):
         address = input("Введите искомый адрес в свободной форме: ")
         print("Пожалуйста, выберите один из найденных адресов")
-        with self.client() as client:
+        with self.client_class() as client:
             response = client.get_address(address)
             for idx, addr in enumerate(response, start=1):
                 print(f"{idx} : {addr['unrestricted_value']}")
@@ -73,7 +73,7 @@ class DadataApp:
         return response[address_idx - 1]['value']
 
     def _get_location_engine(self, address: str):
-        with self.client() as client:
+        with self.client_class() as client:
             response = client.get_location(address)
             print(response["geo_lat"], response["geo_lon"])
 

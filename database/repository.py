@@ -1,11 +1,34 @@
 from database.engine import DBEngine
+from abc import ABC, abstractmethod
 
 
-class Repo:
+class ConfigReaderBase(ABC):
+    @abstractmethod
+    def initial_config(self):
+        NotImplementedError
+
+    @abstractmethod
+    def get_tokens(self):
+        NotImplementedError
+
+    @abstractmethod
+    def set_lang(self):
+        NotImplementedError
+
+    @abstractmethod
+    def get_base_params(self):
+        NotImplementedError
+
+    @abstractmethod
+    def set_tokens(self):
+        NotImplementedError
+
+
+class ConfigReaderFromDB(ConfigReaderBase):
     def __init__(self):
         self.database = DBEngine()
 
-    def initial_table(self):
+    def initial_config(self):
         with self.database as cursor:
             cursor.executescript("""CREATE TABLE IF NOT EXISTS data
             (id integer unique default 1,
@@ -22,12 +45,11 @@ class Repo:
             result = cursor.fetchone()
         return result
 
-    def update_lang(self, lang: str):
+    def set_lang(self, lang: str):
         with self.database as cursor:
             cursor.execute("""UPDATE data
                             SET lang = ?
                             WHERE id = 1;""", ("ru" if lang == '1' else "en"))
-
 
     def get_base_params(self):
         with self.database as cursor:
