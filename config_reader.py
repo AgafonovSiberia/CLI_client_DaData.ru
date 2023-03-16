@@ -50,9 +50,7 @@ class ConfigReaderFromDB(ConfigReaderBase):
     def set_lang(self, lang: str):
         with self.database as cursor:
             cursor.execute(
-                """UPDATE data
-                            SET lang = ?
-                            WHERE id = 1;""",
+                """UPDATE data SET lang = ? WHERE id = 1;""",
                 ("ru" if lang == "1" else "en",),
             )
 
