@@ -34,7 +34,10 @@ poetry run python -m main.py
 **Внимание!**<br>
 Приложение работает только в консольном режиме.
 
-1.При первом запуске приложения Вам необходимо будет ввести валидные Api-key и Token, полученные от сервиса [dadata.ru](https://dadata.ru/) после регистрации.
-2.Навигация по меню осуществяется путём ввода соответствующих команд.
+1. При первом запуске приложения Вам необходимо будет ввести валидные Api-key и Token, полученные от сервиса [dadata.ru](https://dadata.ru/) после регистрации.
+2. Навигация по меню осуществяется путём ввода соответствующих команд.
 
+## Screenshots
 
+![alt text](https://github.com/AgafonovSiberia/cli_client_DaData.ru/blob/master/data/3.png)
+![alt text](https://github.com/AgafonovSiberia/cli_client_DaData.ru/blob/master/data/4.png)
