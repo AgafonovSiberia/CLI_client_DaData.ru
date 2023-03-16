@@ -22,16 +22,13 @@ class Client(ClientBase):
     """
     Клиент для работы с API сервиса DaData.ru
     """
+
     def __init__(self):
         self.config = ConfigReaderFromDB()
-        self._init_client_params()
-
-        headers = {
-            "Content-type": "application/json",
-            "Accept": "application/json"
-        }
+        headers = {"Content-type": "application/json", "Accept": "application/json"}
 
         self._client = HttpClient(headers=headers)
+        self._init_client_params()
 
     def _init_client_params(self) -> None:
         """
@@ -42,7 +39,11 @@ class Client(ClientBase):
             self._client.headers["Authorization"] = f"Token {self.api_key}"
             self._client.headers["X-secret"] = self.token
 
-        self.base_url_cleaner, self.base_url_suggest, self.lang = self.config.get_base_params()
+        (
+            self.base_url_cleaner,
+            self.base_url_suggest,
+            self.lang,
+        ) = self.config.get_base_params()
 
     def get_address(self, address: str) -> dict:
         """
@@ -53,9 +54,11 @@ class Client(ClientBase):
         :param address: адрес, введённый пользователем в свободной форме
         :return: словарь с данными по 20 адресам
         """
-        response = self._client.post(url=f"{self.base_url_suggest}/address",
-                                     json={"query": address, "count": 20, "language": self.lang})
-        return response.json()['suggestions']
+        response = self._client.post(
+            url=f"{self.base_url_suggest}/address",
+            json={"query": address, "count": 20, "language": self.lang},
+        )
+        return response.json()["suggestions"]
 
     def get_location(self, address: str) -> dict:
         """
@@ -66,8 +69,9 @@ class Client(ClientBase):
         :param address: строка с полным адресом
         :return: словарь с данными по адресу, включая координаты
         """
-        response = self._client.post(url=f"{self.base_url_cleaner}/address",
-                                     json=[address])
+        response = self._client.post(
+            url=f"{self.base_url_cleaner}/address", json=[address]
+        )
         return response.json()[0]
 
     def validate_tokens(self, api_key: str, token: str) -> bool:
@@ -80,14 +84,14 @@ class Client(ClientBase):
         :param token: Token от сервиса DaData.ru
         :return: False, если данные не валидны, True в обратном случае
         """
-        response = self._client.post(url=f"{self.base_url_cleaner}/address",
-                                     json=[TEST_ADDRESS],
-                                     headers={"Authorization": f"Token {api_key}",
-                                              "X-secret": token})
+        response = self._client.post(
+            url=f"{self.base_url_cleaner}/address",
+            json=[TEST_ADDRESS],
+            headers={"Authorization": f"Token {api_key}", "X-secret": token},
+        )
         if response.status_code == 403:
             return False
         return True
 
     def close(self) -> None:
         self._client.close()
-

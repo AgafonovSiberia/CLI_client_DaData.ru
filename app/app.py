@@ -7,6 +7,7 @@ class DadataApp:
     """
     CLI-App для работы с сервисом DaData.ru
     """
+
     def __init__(self):
         self.config = ConfigReaderFromDB()
         self.client_class = Client
@@ -24,12 +25,12 @@ class DadataApp:
     def _main_menu_with_token(self):
         """Обработчик пользователя, токены которого определены в БД"""
         print(templates.main_menu)
-        command = self._get_command(("1", "2", "3"))
+        command = self._get_command(("1", "2", "0"))
         if command == "1":
             self._api_query_engine()
         elif command == "2":
             self._config_menu()
-        elif command == "3":
+        elif command == "0":
             print(templates.bye_message)
             exit(0)
 
@@ -49,33 +50,33 @@ class DadataApp:
     def _tokens_is_not_valid(self):
         """Проверка на валидность токенов введённых пользователем"""
         print(templates.tokens_is_not_valid)
-        command = self._get_command(("1", "2"))
+        command = self._get_command(("1", "0"))
         if command == "1":
             self._main_menu_without_token()
-        elif command == "2":
+        elif command == "0":
             print(templates.bye_message)
             exit(0)
 
     def _config_menu(self):
         """Меню настроек"""
         print(templates.config_menu)
-        command = self._get_command(("1", "2", "3"))
+        command = self._get_command(("1", "2", "0"))
         if command == "1":
             self._main_menu_withot_token()
         elif command == "2":
             self._change_lang_menu()
-        elif command == "3":
+        elif command == "0":
             self._main_menu_with_token()
 
     def _change_lang_menu(self):
         """Меню смены языка"""
         print(templates.change_lang)
-        command = self._get_command(("1", "2", "3"))
+        command = self._get_command(("1", "2", "0"))
         if command in ("1", "2"):
             self.config.set_lang(command)
             print(f"{templates.change_lang}{'ru' if command== '1' else 'en'}")
             self._main_menu_with_token()
-        elif command == "3":
+        elif command == "0":
             self._config_menu()
 
     def _change_lang_engine(self, new_lang: str = "en"):
@@ -106,13 +107,17 @@ class DadataApp:
         address_idx = int(input(templates.input_address_idx))
         if address_idx == 0:
             return None
-        return response[address_idx - 1]['value']
+        return response[address_idx - 1]["value"]
 
     def _get_location_engine(self, address: str):
         """Получает от API координаты адреса"""
         with self.client_class() as client:
             response = client.get_location(address)
-            print(response["geo_lat"], response["geo_lon"])
+            print(templates.result)
+            print(f"Адрес: {address}")
+            print(
+                f"Координаты:\nШирота: {response['geo_lat']}, Долгота: {response['geo_lon']}"
+            )
 
     @staticmethod
     def _get_command(commands_list: tuple[str], command: int = None):
@@ -121,20 +126,3 @@ class DadataApp:
             if command not in commands_list:
                 print(templates.command_not_found)
         return command
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
