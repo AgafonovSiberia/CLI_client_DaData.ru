@@ -1,7 +1,7 @@
 import sqlite3
 
 
-class DBEngine:
+class SQLiteEngine:
     def __init__(self, database_file: str = "data.db"):
         self.database_file = database_file
 

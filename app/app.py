@@ -1,4 +1,4 @@
-from database.repository import ConfigReaderFromDB
+from config_reader import ConfigReaderFromDB
 from templates import templates
 from api.client import Client
 
@@ -26,12 +26,12 @@ class DadataApp:
         elif command == "2":
             self._config_menu()
         elif command == "3":
-            print("Всего доброго!")
+            print(templates.bye_message)
             exit(0)
 
     def _main_menu_without_token(self):
-        api_key = input("Введите api_key от сервиса dadata.ru: ")
-        secret_token = input("Введите token от сервиса dadata.ru: ")
+        api_key = input(templates.input_api_key)
+        secret_token = input(templates.input_token)
 
         with self.client_class() as client:
             is_valid = client.validate_tokens(api_key, secret_token)
@@ -47,6 +47,7 @@ class DadataApp:
         if command == "1":
             self._main_menu_without_token()
         elif command == "2":
+            print(templates.bye_message)
             exit(0)
 
     def _config_menu(self):
@@ -64,7 +65,7 @@ class DadataApp:
         command = self._get_command(("1", "2", "3"))
         if command in ("1", "2"):
             self.config.set_lang(command)
-            print(f"Язык успешно заменён на {'ru' if command== '1' else 'en'}")
+            print(f"{templates.change_lang}{'ru' if command== '1' else 'en'}")
             self._main_menu_with_token()
         elif command == "3":
             self._config_menu()
@@ -79,16 +80,16 @@ class DadataApp:
         self._main_menu()
 
     def _get_address_engine(self):
-        address = input("Введите искомый адрес в свободной форме (либо введите 0, если хотите отменить поиск): ")
+        address = input(templates.input_address)
         if address == "0":
             return self._main_menu_with_token()
-        print("Пожалуйста, выберите один из найденных адресов")
+        print(templates.help_message_change_address)
         with self.client_class() as client:
             response = client.get_address(address)
             for idx, addr in enumerate(response, start=1):
                 print(f"{idx} : {addr['unrestricted_value']}")
 
-        address_idx = int(input("Введите ID подходящего адреса (либо введите 0, если ни один адрес не подходит): "))
+        address_idx = int(input(templates.input_address_idx))
         if address_idx == 0:
             return None
         return response[address_idx - 1]['value']
@@ -101,9 +102,9 @@ class DadataApp:
     @staticmethod
     def _get_command(commands_list: tuple[str], command: int = None):
         while command not in commands_list:
-            command = input("Введите команду: ")
+            command = input(templates.input_command)
             if command not in commands_list:
-                print("Command not found")
+                print(templates.command_not_found)
         return command
 
 

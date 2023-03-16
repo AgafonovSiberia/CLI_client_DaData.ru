@@ -1,4 +1,4 @@
-from database.engine import DBEngine
+from db.db_engine import SQLiteEngine
 from abc import ABC, abstractmethod
 
 
@@ -26,14 +26,14 @@ class ConfigReaderBase(ABC):
 
 class ConfigReaderFromDB(ConfigReaderBase):
     def __init__(self):
-        self.database = DBEngine()
+        self.database = SQLiteEngine()
 
     def initial_config(self):
         with self.database as cursor:
             cursor.executescript("""CREATE TABLE IF NOT EXISTS data
             (id integer unique default 1,
-            api_base_url_cleaner text unique default 'https://cleaner.dadata.ru/',
-            api_base_url_suggest text unique default 'https://suggestions.dadata.ru/',
+            api_base_url_cleaner text unique default 'https://cleaner.dadata.ru/api/v1/clean',
+            api_base_url_suggest text unique default 'https://suggestions.dadata.ru/suggestions/api/4_1/rs/suggest',
             api_key text unique default NULL,
             secret_token text unique default NULL,
             lang text CHECK (lang in ('ru', 'en')) default 'ru');""")

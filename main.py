@@ -1,7 +1,8 @@
-from app import DadataApp
+from app.app import DadataApp
 
 app = DadataApp()
 
-app.start()
+if __name__ == "__main__":
+    app.start()
 
 
