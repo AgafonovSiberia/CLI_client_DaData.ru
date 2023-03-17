@@ -34,7 +34,7 @@ poetry run python -m main.py
 
 ### 2.Альтернативный метод
 <ol>
-  <li>Клонировать репозиторий <code>git clone ghttps://github.com/AgafonovSiberia/CLI_client_DaData.ru.git</code>
+  <li>Клонировать репозиторий <code>git clone https://github.com/AgafonovSiberia/CLI_client_DaData.ru.git</code>
   <li>Перейти в рабочий каталог <code>cd CLI_client_DaDadata.ru</code>
   <li>Создать виртуальное окружение <code>python3.10 -m venv venv</code>
   <li>Активировать виртуальное окружение <code>source venv/bin/activate</code>
